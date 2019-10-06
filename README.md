@@ -38,7 +38,7 @@ Server: npm run build/dev
 
 Client: npm run build/start
 
-#Built/used With
+#Built With
 
 Nodejs
 React
