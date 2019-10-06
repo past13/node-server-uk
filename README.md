@@ -1,56 +1,38 @@
 # Short Url application
 
-One Paragraph of project description goes here
-
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+Install Node.js
+Mongodb
+Mongoose
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+Clone the project
+https://github.com/past13/url-app-test.git
 
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
+before run: npm install
 
 ## Running the tests
 
 Explain how to run the automated tests for this system
 
-### Break down into end to end tests
+### App is split into 2 binaries with entry points located at:
 
-Explain what these tests test and why
+app                                                       * Main application
+│   ├── client                                            * Folder for client application
+│   │   └── app.js                                        * main file
+│   ├── server                                            * Folder for server application
+│   │   └── app.ts                                        * main file
 
-```
-Give an example
-```
+## Server acts as a REST api server accessible on http://localhost:3000/ by default
+## Client part will be using React (serves SPA in this case) accessible on http://localhost:3001/ by default
 
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
+Api endpoints
 
 ## Deployment
 
