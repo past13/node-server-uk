@@ -9,3 +9,37 @@ These instructions will get you a copy of the project up and running on your loc
 Install Node.js
 Mongodb
 Mongoose
+
+# Installing
+Clone the project
+https://github.com/past13/url-app-test.git
+
+App is split into 2 binaries with entry points located at:
+
+cmd/
+├── client
+│   └── app.Js
+├── server
+    └── app.ts
+    
+# Server acts as a REST api server accessible on http://localhost:3000/ by default
+# Client part will be using React (serves SPA in this case) accessible on http://localhost:3001/ by default
+
+Api endpoints
+
+Api consists of 2 endpoints:
+
+    (Post) /urls/ - Save input original urls
+    (Get) /urls/:id - Get redirect link for url (original)
+    
+Scripts run server and client
+
+Server: npm run build/dev
+
+Client: npm run build/start
+
+#Built/used With
+
+Nodejs
+React
+MongoDb
