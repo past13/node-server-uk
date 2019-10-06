@@ -24,8 +24,8 @@ before run: npm install
 
 
 ### App is split into 2 binaries with entry points located at:
-
-
+CLIENT
+SERVER
 
 ### Server acts as a REST api server 
 accessible on http://localhost:3000/ by default
@@ -37,12 +37,27 @@ accessible on http://localhost:3001/ by default
 
 Api endpoints
 
+    (Post) /urls/ - Save input original urls
+    (Get) /urls/:id - Get redirect link for url (original)
+    
+
+
+### Build
+Server: npm run build
+Client: npm run build
+
+
+    
 ### Deployment
-Add additional notes about how to deploy this on a live system
+Scripts run server and client
+
+Server: npm run dev
+Client: npm run start
 
 
 
 ### Built With
-
-
+Nodejs
+React
+MongoDb
 
