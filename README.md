@@ -23,11 +23,11 @@ Explain how to run the automated tests for this system
 
 ### App is split into 2 binaries with entry points located at:
 
-app                                                       * Main application
-│   ├── client                                            * Folder for client application
-│   │   └── app.js                                        * main file
-│   ├── server                                            * Folder for server application
-│   │   └── app.ts                                        * main file
+ resources                                           * Folder for static resources
+│   ├── data                                            * Folder for static data
+│   │   └── en                                          * Folder for i18n English data
+│   ├── i18n                                            * Folder for i18n translations
+│   │   └── en.json  
 
 ## Server acts as a REST api server accessible on http://localhost:3000/ by default
 ## Client part will be using React (serves SPA in this case) accessible on http://localhost:3001/ by default
