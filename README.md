@@ -20,8 +20,10 @@ before run: npm install
 ### App is split into 2 binaries with entry points located at:
 
 
-### Server acts as a REST api server accessible on http://localhost:3000/ by default
-### Client part will be using React (serves SPA in this case) accessible on http://localhost:3001/ by default
+### Server acts as a REST api server 
+accessible on http://localhost:3000/ by default
+### Client part will be using React (serves SPA in this case) 
+accessible on http://localhost:3001/ by default
 
 Api endpoints
 
