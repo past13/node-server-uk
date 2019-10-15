@@ -1,5 +1,6 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
+
 
 export const UrlSchema = new Schema({
   originalUrl: String,
@@ -8,3 +9,5 @@ export const UrlSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
+
+export const Urls = mongoose.model('UrlShorten', UrlSchema);
