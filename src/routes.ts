@@ -19,5 +19,9 @@ export class Routes {
         app.get('/locations', this.projectController.getLocations); 
         app.delete('/locations/:id', this.projectController.deleteLocation); 
 
+        app.post('/materials', this.projectController.addMaterial); 
+        app.get('/materials', this.projectController.getMaterials); 
+        app.delete('/materials/:id', this.projectController.deleteMaterial); 
+
     }
 }

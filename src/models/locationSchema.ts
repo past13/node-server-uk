@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-export const LocationSchema = new Schema({
+const LocationSchema = new Schema({
   name: String,
   country: String,
   city: String,

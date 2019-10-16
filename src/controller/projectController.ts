@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Projects } from './../models/projectSchema';
 import { Categories } from './../models/categorySchema';
 import { Locations } from './../models/locationSchema';
+import { Materials } from './../models/materialSchema';
 
 export default class ProjectController {
 
@@ -176,6 +177,58 @@ export default class ProjectController {
             } else {
                 res.json({
                     message: 'No Location found!'
+                  })
+            }
+        });
+    }
+
+    public async addMaterial (req: Request, res: Response) {
+        const { name } = req.body;
+        const updatedAt = new Date();
+        
+        try {
+            const material = await Materials.findOne({ name: name });
+            if (material) {
+                res.status(200).json(material);
+            } else {
+
+                const material = new Materials({
+                    name,
+                    updatedAt
+                });
+
+                await material.save();
+                res.status(200).json(material);
+            
+            }
+        } catch (err) {
+            res.status(401).json("Invalid material");
+        }
+    }
+
+    public async deleteMaterial (req: Request, res: Response) {
+        const id = req.params.id;
+        await Materials.deleteOne({_id: id}, (err) => {
+            if (err) {
+                res.json({
+                    status: "error",
+                    message: 'Material was not deleted'
+                });
+            }
+                res.json({
+                status: "success",
+                message: 'Material was deleted'
+            });
+        });
+    }
+
+    public async getMaterials (req: Request, res: Response) {
+        await Materials.find({}, (err, material) => {
+            if (!err ) {
+                res.json(material)
+            } else {
+                res.json({
+                    message: 'No material found!'
                   })
             }
         });

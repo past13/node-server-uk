@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-
-export const UrlSchema = new Schema({
+const UrlSchema = new Schema({
   originalUrl: String,
   urlCode: String,
   shortUrl: String,
