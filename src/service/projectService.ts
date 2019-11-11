@@ -1,4 +1,7 @@
 import { Projects } from "../models/projectSchema";
+import LocationService from "./locationService";
+import CategoryService from "./categoryService";
+import MaterialService from "./materialService";
 
 export default class ProjectService {
 
@@ -25,17 +28,31 @@ export default class ProjectService {
     }
 
     public async addProject (body: any) {
-        const { name, description, phoneNumber, email } = body;
+        const { 
+            name, 
+            description, 
+            phoneNumber, 
+            email, 
+            locationName, 
+            materialName 
+        } = body;
+        
         const updatedAt = new Date();
+        const locationService = new LocationService();
+        const materialService = new MaterialService();
 
         const projectExist = await this.getProjectByName(name);
-        
+        const location = await locationService.getLocationByName(locationName);
+        const material = await materialService.getMaterialByName(materialName);
+
         if (!projectExist) {
             const project = new Projects({
                 name,
                 description,
                 phoneNumber,
                 email,
+                location,
+                material,
                 updatedAt
             });
     

@@ -6,6 +6,10 @@ export class Routes {
 
     public routes(app: Application): void {
 
+        app.post('/users', this.projectController.addUser); 
+        app.get('/users', this.projectController.getUsers); 
+        app.delete('/users/:id', this.projectController.deleteUser); 
+
         app.post('/projects', this.projectController.addProject); 
         app.get('/projects', this.projectController.getProjects); 
         app.get('/projects/:id', this.projectController.getProjectById);
