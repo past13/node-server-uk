@@ -1,97 +1,80 @@
 import { Request, Response, NextFunction } from 'express';
-import { Projects } from './../models/projectSchema';
-import { Categories } from './../models/categorySchema';
-import { Locations } from './../models/locationSchema';
 import { Materials } from './../models/materialSchema';
+
+import ProjectService from './../service/projectService';
+import CategoryService from '../service/categoryService';
+import LocationService from '../service/locationService';
+import MaterialService from '../service/materialService';
 
 export default class ProjectController {
 
     public async getProjects (req: Request, res: Response) {
-        await Projects.find({}, (err, project) => {
-            if (!err ) {
-                res.json(project)
-            } else {
-                res.json({
-                    message: 'No Projects found!'
-                  })
-            }
-        });
+        const service = new ProjectService();
+        const project = await service.getProjects();
+        
+        res.status(200).json(project);
     }
 
     public async addProject (req: Request, res: Response) {
-        const { name, description, phoneNumber, email } = req.body;
-        
-        const updatedAt = new Date();
-        
-        try {
-            const project = await Projects.findOne({ name: name });
-            if (project) {
-                res.status(200).json(project);
-            } else {
-                const project = new Projects({
-                    name,
-                    description,
-                    phoneNumber,
-                    email,
-                    updatedAt
-                });
+        const body = req.body;
+        const service = new ProjectService();
 
-                await project.save();
-                res.status(200).json(project);
+        try {     
+            const result = await service.addProject(body);
             
+            if (result !== "projectExist") {
+                res.status(200).json(result);
+            } else {
+                res.status(200).json(result);
             }
+
         } catch(err) {
-            res.status(401).json("Invalid Project Id");
+            res.status(401).json(err);
         }
     }
 
     public async getProjectById (req: Request, res: Response) {
-        const id = req.params.id;
-        await Projects.findOne({ _id: id }, (err, result) => {
-            if (err) {
-                res.json({
-                    message: 'No Project found!' + id    
-                  })
-            } else {
-                res.json(result)
-            }
-        });
+        const projectId = req.params.id;
+
+        const service = new ProjectService();
+        const project = await service.getProjectById(projectId);
+        
+        if (project !== null) {
+            res.status(200).json(project);
+        } else {
+            res.status(401).json(`project with id: ${projectId} not found`);
+        }
     }
 
     public async deleteProject (req: Request, res: Response) {
-        const id = req.params.id;
-        await Projects.deleteOne({_id: id}, (err) => {
-            if (err) {
-                res.json({
-                    status: "error",
-                    message: 'Project was not deleted'
-                });
-            }
-                res.json({
-                status: "success",
-                message: 'Project was deleted'
-            });
-        });
+        const projectId = req.params.id;
+        const service = new ProjectService();
+        const result = await service.deleteProjectById(projectId);
+        
+        if (result.deletedCount !== undefined && result.deletedCount > 0) {
+            res.status(200).json("project deleted");
+        } else {
+            res.status(401).json("project was not deleted");
+        }
+    }
+
+    public async getCategries (req: Request, res: Response) {
+        const service = new CategoryService();
+        const result = await service.getCategories();
+
+        res.status(200).json(result);
     }
 
     public async addCategory (req: Request, res: Response) {
         const { name } = req.body;
-        
-        const updatedAt = new Date();
+        const service = new CategoryService();
         
         try {
-            const category = await Categories.findOne({ name: name });
-            if (category) {
-                res.status(200).json(category);
-            } else {
-                const category = new Categories({
-                    name,
-                    updatedAt
-                });
-
-                await category.save();
-                res.status(200).json(category);
-            
+            const result = await service.addCategory(name);
+            if (result) {
+                res.status(200).json(result);
+            } else {                
+                res.status(200).json(result);            
             }
         } catch(err) {
             res.status(401).json("Invalid Category Id");
@@ -99,107 +82,71 @@ export default class ProjectController {
     }
 
     public async deleteCategory (req: Request, res: Response) {
-        const id = req.params.id;
-        await Categories.deleteOne({_id: id}, (err) => {
-            if (err) {
-                res.json({
-                    status: "error",
-                    message: 'Category was not deleted'
-                });
-            }
-                res.json({
-                status: "success",
-                message: 'Category was deleted'
-            });
-        });
+        const categoryId = req.params.id;
+
+        const service = new CategoryService();
+        const result = await service.deleteCategory(categoryId);
+        
+        if (result.deletedCount !== undefined && result.deletedCount > 0) {
+            res.status(200).json("category deleted");
+        } else {
+            res.status(401).json("category was not deleted");
+        }
+    } 
+
+    public async getLocations (req: Request, res: Response) {
+        const service = new LocationService();
+        const result = await service.getLocations();
+
+        res.status(200).json(result);
     }
 
-    public async getCategries (req: Request, res: Response) {
-        await Categories.find({}, (err, category) => {
-            if (!err ) {
-                res.json(category)
-            } else {
-                res.json({
-                    message: 'No categories found!'
-                  })
-            }
-        });
+    public async deleteLocation (req: Request, res: Response) {
+        const locationId = req.params.id;
+
+        const service = new LocationService();
+        const result = await service.deleteLocationById(locationId);
+        
+        if (result.deletedCount !== undefined && result.deletedCount > 0) {
+            res.status(200).json("location deleted");
+        } else {
+            res.status(401).json("location was not deleted");
+        }
     }
 
     public async addLocation (req: Request, res: Response) {
-        const { name, country, city, address, postCode } = req.body;
-        const updatedAt = new Date();
+        const body = req.body;
+        const service = new LocationService();
         
         try {
-            const location = await Locations.findOne({ name: name });
+            const location = await service.addLocation(body);
             if (location) {
                 res.status(200).json(location);
             } else {
-
-                const location = new Locations({
-                    name,
-                    country,
-                    city,
-                    address,
-                    postCode,
-                    updatedAt
-                });
-
-                await location.save();
                 res.status(200).json(location);
-            
             }
         } catch (err) {
             res.status(401).json("Invalid Location");
         }
     }
+  
+    public async getMaterials (req: Request, res: Response) {
+        const service = new MaterialService();
+        const result = await service.getMaterials();
 
-    public async deleteLocation (req: Request, res: Response) {
-        const id = req.params.id;
-        await Locations.deleteOne({_id: id}, (err) => {
-            if (err) {
-                res.json({
-                    status: "error",
-                    message: 'Location was not deleted'
-                });
-            }
-                res.json({
-                status: "success",
-                message: 'Location was deleted'
-            });
-        });
-    }
-
-    public async getLocations (req: Request, res: Response) {
-        await Locations.find({}, (err, location) => {
-            if (!err ) {
-                res.json(location)
-            } else {
-                res.json({
-                    message: 'No Location found!'
-                  })
-            }
-        });
+        res.status(200).json(result);
     }
 
     public async addMaterial (req: Request, res: Response) {
-        const { name } = req.body;
-        const updatedAt = new Date();
+        const body = req.body;
+        const service = new MaterialService();
         
         try {
-            const material = await Materials.findOne({ name: name });
+            const material = await service.addMaterial(body);
             if (material) {
                 res.status(200).json(material);
             } else {
-
-                const material = new Materials({
-                    name,
-                    updatedAt
-                });
-
-                await material.save();
                 res.status(200).json(material);
-            
             }
         } catch (err) {
             res.status(401).json("Invalid material");
@@ -207,30 +154,15 @@ export default class ProjectController {
     }
 
     public async deleteMaterial (req: Request, res: Response) {
-        const id = req.params.id;
-        await Materials.deleteOne({_id: id}, (err) => {
-            if (err) {
-                res.json({
-                    status: "error",
-                    message: 'Material was not deleted'
-                });
-            }
-                res.json({
-                status: "success",
-                message: 'Material was deleted'
-            });
-        });
-    }
+        const materialId = req.params.id;
+        const service = new MaterialService();
 
-    public async getMaterials (req: Request, res: Response) {
-        await Materials.find({}, (err, material) => {
-            if (!err ) {
-                res.json(material)
-            } else {
-                res.json({
-                    message: 'No material found!'
-                  })
-            }
-        });
+        const result = await service.deletematerial(materialId);
+
+        if (result.deletedCount !== undefined && result.deletedCount > 0) {
+            res.status(200).json("material deleted");
+        } else {
+            res.status(401).json("material was not deleted");
+        }
     }
 }
