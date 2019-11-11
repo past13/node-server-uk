@@ -12,6 +12,7 @@ export class Routes {
 
         app.post('/projecttouser', this.projectController.updateProjectToUser); 
         app.post('/addprojectstouser', this.projectController.addProjectsToUser); 
+        app.delete('/deleteprojectsfromuser', this.projectController.deleteProjectsFromUser); 
 
         app.post('/projects', this.projectController.addProject); 
         app.get('/projects', this.projectController.getProjects); 

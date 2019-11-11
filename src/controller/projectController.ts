@@ -47,7 +47,19 @@ export default class ProjectController {
 
         try {   
             const result = await service.addProjectsToUser(body);
-            
+            res.status(200).json(result);
+
+        } catch(err) {
+            res.status(401).json(err);
+        }
+    }
+
+    public async deleteProjectsFromUser (req: Request, res: Response) {
+        const body = req.body;
+        const service = new UserService();
+
+        try {   
+            const result = await service.deleteProjectsFromUser(body);
             res.status(200).json(result);
 
         } catch(err) {

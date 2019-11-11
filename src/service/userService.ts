@@ -79,4 +79,18 @@ export default class UserService {
             return "not updated"
         }
     }
+
+    public async deleteProjectsFromUser(body: any) {
+        const { userId, projectId } = body;
+        const service = new ProjectService();
+
+        const userExist = await this.getUserById(userId);
+        const projectsExist = await service.getProjectsById(projectId);
+
+        if (userExist && projectId.length > 0) {
+            await userExist.remove()
+        }
+
+        return userExist;
+    }
 }
