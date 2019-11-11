@@ -24,27 +24,53 @@ export default class ProjectController {
             res.status(401).json(err);
         }
     }
+    
+    public async updateProjectToUser (req: Request, res: Response) {
+        const body = req.body;
+        const service = new UserService();
+
+        try {   
+            const result = await service.updateProjectToUser(body);
+            if (result.nModified !== 0) {
+                res.status(200).json("updated");
+            } else {
+                res.status(200).json("not updated");
+            }
+        } catch(err) {
+            res.status(401).json(err);
+        }
+    }
+
+    public async addProjectsToUser (req: Request, res: Response) {
+        const body = req.body;
+        const service = new UserService();
+
+        try {   
+            const result = await service.addProjectsToUser(body);
+            
+            res.status(200).json(result);
+
+        } catch(err) {
+            res.status(401).json(err);
+        }
+    }
 
     public async getUsers (req: Request, res: Response) {
         const service = new UserService();
         const result = await service.getUsers();
-        
         res.status(200).json(result);
     }
     
     public async deleteUser (req: Request, res: Response) {
         const userId = req.params.id;
-
         const service = new UserService();
         const result = await service.deleteUserById(userId);
-        
         res.status(200).json(result);
     }
 
     public async getProjects (req: Request, res: Response) {
         const service = new ProjectService();
         const result = await service.getProjects();
-        
         res.status(200).json(result);
     }
 
@@ -54,13 +80,11 @@ export default class ProjectController {
 
         try {     
             const result = await service.addProject(body);
-            
             if (result !== "projectExist") {
                 res.status(200).json(result);
             } else {
                 res.status(200).json(result);
             }
-
         } catch(err) {
             res.status(401).json(err);
         }
@@ -68,14 +92,13 @@ export default class ProjectController {
 
     public async getProjectById (req: Request, res: Response) {
         const projectId = req.params.id;
-
         const service = new ProjectService();
         const project = await service.getProjectById(projectId);
         
         if (project !== null) {
             res.status(200).json(project);
         } else {
-            res.status(401).json(`project with id: ${projectId} not found`);
+            res.status(200).json(`project with id: ${projectId} not found`);
         }
     }
 
@@ -87,7 +110,7 @@ export default class ProjectController {
         if (result.deletedCount !== undefined && result.deletedCount > 0) {
             res.status(200).json("project deleted");
         } else {
-            res.status(401).json("project was not deleted");
+            res.status(200).json("project was not deleted");
         }
     }
 
@@ -123,7 +146,7 @@ export default class ProjectController {
         if (result.deletedCount !== undefined && result.deletedCount > 0) {
             res.status(200).json("category deleted");
         } else {
-            res.status(401).json("category was not deleted");
+            res.status(200).json("category was not deleted");
         }
     } 
 
@@ -136,14 +159,13 @@ export default class ProjectController {
 
     public async deleteLocation (req: Request, res: Response) {
         const locationId = req.params.id;
-
         const service = new LocationService();
         const result = await service.deleteLocationById(locationId);
         
         if (result.deletedCount !== undefined && result.deletedCount > 0) {
             res.status(200).json("location deleted");
         } else {
-            res.status(401).json("location was not deleted");
+            res.status(200).json("location was not deleted");
         }
     }
 
@@ -166,7 +188,6 @@ export default class ProjectController {
     public async getMaterials (req: Request, res: Response) {
         const service = new MaterialService();
         const result = await service.getMaterials();
-
         res.status(200).json(result);
     }
 
@@ -195,7 +216,7 @@ export default class ProjectController {
         if (result.deletedCount !== undefined && result.deletedCount > 0) {
             res.status(200).json("material deleted");
         } else {
-            res.status(401).json("material was not deleted");
+            res.status(200).json("material was not deleted");
         }
     }
 }

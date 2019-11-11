@@ -10,6 +10,9 @@ export class Routes {
         app.get('/users', this.projectController.getUsers); 
         app.delete('/users/:id', this.projectController.deleteUser); 
 
+        app.post('/projecttouser', this.projectController.updateProjectToUser); 
+        app.post('/addprojectstouser', this.projectController.addProjectsToUser); 
+
         app.post('/projects', this.projectController.addProject); 
         app.get('/projects', this.projectController.getProjects); 
         app.get('/projects/:id', this.projectController.getProjectById);

@@ -11,6 +11,10 @@ export default class ProjectService {
         });
     }
 
+    public async getProjectsById (projectId: []) {
+        return await Projects.find({_id: { $in: projectId } });
+    }
+
     public async getProjectById (projectId: string) {
         return await Projects.findOne({ _id: projectId }, (project) => {
             return project;
