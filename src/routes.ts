@@ -15,12 +15,16 @@ export class Routes {
         app.delete('/deleteprojectsfromuser', this.projectController.deleteProjectsFromUser); 
 
         app.post('/projects', this.projectController.addProject); 
+        app.put('/projects/:id', this.projectController.updateProjectById)
         app.get('/projects', this.projectController.getProjects); 
         app.get('/projects/:id', this.projectController.getProjectById);
         app.delete('/projects/:id', this.projectController.deleteProject); 
 
+        app.put('/addlocationtoprojects/:id', this.projectController.addLocationToProject)
+        
         app.post('/categories', this.projectController.addCategory); 
         app.get('/categories', this.projectController.getCategries); 
+        app.put('/categories/:id', this.projectController.updateCategory)
         app.delete('/categories/:id', this.projectController.deleteCategory); 
 
         app.post('/locations', this.projectController.addLocation); 

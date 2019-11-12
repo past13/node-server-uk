@@ -25,6 +25,22 @@ export default class ProjectController {
         }
     }
     
+    public async updateProjectById (req: Request, res: Response) {
+        const body = req.body;
+        const service = new ProjectService();
+
+        try {   
+            const result = await service.updateProjectById(body);
+            // if (result.nModified !== 0) {
+                res.status(200).json(result);
+            // } else {
+            //     res.status(200).json("not updated project");
+            // }
+        } catch(err) {
+            res.status(401).json(err);
+        }
+    }
+
     public async updateProjectToUser (req: Request, res: Response) {
         const body = req.body;
         const service = new UserService();
@@ -133,6 +149,15 @@ export default class ProjectController {
         res.status(200).json(result);
     }
 
+    public async updateCategory (req: Request, res: Response) {
+        const service = new CategoryService();
+        const { cateogryId, name } = req.body;
+
+        const result = await service.updateCategory(cateogryId, name);
+
+        res.status(200).json(result);
+    }    
+
     public async addCategory (req: Request, res: Response) {
         const { name } = req.body;
         const service = new CategoryService();
@@ -196,7 +221,26 @@ export default class ProjectController {
             res.status(401).json("Invalid Location");
         }
     }
-  
+
+
+
+    public async addLocationToProject (req: Request, res: Response) {
+        const body = req.body;
+        const projectId = req.params.id;
+        const service = new ProjectService();
+
+        try {
+            const location = await service.addLocationToProject(projectId, body);
+            if (location) {
+                res.status(200).json(location);
+            } else {
+                res.status(200).json(location);
+            }
+        } catch (err) {
+            res.status(401).json("Invalid Location");
+        }
+    }
+
     public async getMaterials (req: Request, res: Response) {
         const service = new MaterialService();
         const result = await service.getMaterials();

@@ -1,6 +1,9 @@
-import { Users } from "../models/userSchema";
+import { Users, UserSchema } from "../models/userSchema";
 import ProjectService from "./projectService";
-import { Projects } from "../models/projectSchema";
+import { Projects, ProjectSchema } from "../models/projectSchema";
+import { model } from "mongoose";
+import { ObjectID } from "bson";
+import { callbackify } from "util";
 
 export default class UserService {
 
@@ -84,13 +87,29 @@ export default class UserService {
         const { userId, projectId } = body;
         const service = new ProjectService();
 
-        const userExist = await this.getUserById(userId);
+        // const userExist = await this.getUserById(userId);
         const projectsExist = await service.getProjectsById(projectId);
 
-        if (userExist && projectId.length > 0) {
-            await userExist.remove()
-        }
+        if (projectId.length > 0) {
 
-        return userExist;
+            const User = model('Users', UserSchema);
+            const Project = model('Projects', ProjectSchema);
+
+            // const location = new ObjectID("5dc9562e5b91b11758ccb7fa");
+            // const project = new ObjectID("5dc972b59580496d78c00ecf");
+
+            // User.remove({ _id: userId, projects: { $in: projectsExist}}, function(err: any) {
+            //     return err;
+            // });
+
+            // return User.remove({ _id: userId, projects: { $in: projectId}}, this.nameas);
+
+            //  User.deleteMany({ _id: userId, projects: { $in: projectId}}, function(err) {
+            //     return err;
+            //  });
+
+        } else {
+            return "Test";
+        }
     }
 }

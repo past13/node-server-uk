@@ -24,6 +24,13 @@ export default class CategoryService {
         return await Categories.deleteOne({_id: projectId});
     }
 
+    public async updateCategory (categoryId: string, name: string) {
+        return Categories.updateOne(
+            { _id: categoryId },
+            { $set: {name: name} }
+        );
+    }
+
     public async addCategory (name: string) {
         const updatedAt = new Date();
 
