@@ -1,14 +1,22 @@
 import { Application } from 'express';
 import ProjectController from './controller/projectController';
+import LocationController from './controller/locationController';
+import CategoryController from './controller/categoryController';
+import MaterialController from './controller/materialController';
+import UserController from './controller/userController';
 
 export class Routes {
     public projectController: ProjectController = new ProjectController();
+    public locationController: LocationController = new LocationController();
+    public categoryController: CategoryController = new CategoryController();
+    public materialController: MaterialController = new MaterialController();
+    public userController: UserController = new UserController();
 
     public routes(app: Application): void {
 
-        app.post('/users', this.projectController.addUser); 
-        app.get('/users', this.projectController.getUsers); 
-        app.delete('/users/:id', this.projectController.deleteUser); 
+        app.post('/users', this.userController.addUser); 
+        app.get('/users', this.userController.getUsers); 
+        app.delete('/users/:id', this.userController.deleteUser); 
 
         app.post('/projecttouser', this.projectController.updateProjectToUser); 
         app.post('/addprojectstouser', this.projectController.addProjectsToUser); 
@@ -22,18 +30,18 @@ export class Routes {
 
         app.put('/addlocationtoprojects/:id', this.projectController.addLocationToProject)
         
-        app.post('/categories', this.projectController.addCategory); 
-        app.get('/categories', this.projectController.getCategries); 
-        app.put('/categories/:id', this.projectController.updateCategory)
-        app.delete('/categories/:id', this.projectController.deleteCategory); 
+        app.post('/categories', this.categoryController.addCategory); 
+        app.get('/categories', this.categoryController.getCategries); 
+        app.put('/categories/:id', this.categoryController.updateCategory)
+        app.delete('/categories/:id', this.categoryController.deleteCategory); 
 
-        app.post('/locations', this.projectController.addLocation); 
-        app.get('/locations', this.projectController.getLocations); 
-        app.delete('/locations/:id', this.projectController.deleteLocation); 
+        app.post('/locations', this.locationController.addLocation); 
+        app.get('/locations', this.locationController.getLocations); 
+        app.delete('/locations/:id', this.locationController.deleteLocation); 
 
-        app.post('/materials', this.projectController.addMaterial); 
-        app.get('/materials', this.projectController.getMaterials); 
-        app.delete('/materials/:id', this.projectController.deleteMaterial); 
+        app.post('/materials', this.materialController.addMaterial); 
+        app.get('/materials', this.materialController.getMaterials); 
+        app.delete('/materials/:id', this.materialController.deleteMaterial); 
 
     }
 }
