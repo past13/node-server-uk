@@ -1,14 +1,10 @@
-import { Users, UserSchema } from "../models/userSchema";
+import { Users } from "../models/userSchema";
 import ProjectService from "./projectService";
-import { Projects, ProjectSchema } from "../models/projectSchema";
-import { model } from "mongoose";
-import { ObjectID } from "bson";
-import { callbackify } from "util";
 
 export default class UserService {
 
     public async getUsers () {
-        return await Users.findOne({}, (user) => {
+        return await Users.find({}, (user) => {
             return user;
         });
     }
@@ -69,47 +65,52 @@ export default class UserService {
         }
     }
 
+    public async getUniqProjectsByUserId(userId: string, projectId: any[]) {
+        let list: any[] = [];
+        const user = await Users.findById({ _id: userId }).lean();
+
+        if (user.projects.length === 0) {
+            list = projectId;
+        }
+
+        user.projects.map(function(project: any) {
+            if (!projectId.includes(project._id.toString())) {
+                list.push(project._id);
+            }
+        });
+
+        return list;
+    }
+
     public async addProjectsToUser(body: any) {
         const { userId, projectId } = body;
         const service = new ProjectService();
         
-        const userExist = await this.getUserById(userId);
-        const projectsExist = await service.getProjectsById(projectId);
-
-        if (userExist && projectsExist) {
-            return userExist.updateOne({$push: {projects: projectsExist}});
+        const usersProjectsList = await this.getUniqProjectsByUserId(userId, projectId);
+        const projectsExist = await service.getProjectsById(usersProjectsList);
+        
+        if (projectsExist.length > 0) {
+            return await Users.updateMany(
+                { _id: userId }, 
+                { $push: { projects: projectsExist } }
+            );
         } else {
             return "not updated"
         }
     }
 
-    public async deleteProjectsFromUser(body: any) {
+    public async deleteProjectFromUser(body: any) {
         const { userId, projectId } = body;
-        const service = new ProjectService();
-
-        // const userExist = await this.getUserById(userId);
-        const projectsExist = await service.getProjectsById(projectId);
-
-        if (projectId.length > 0) {
-
-            const User = model('Users', UserSchema);
-            const Project = model('Projects', ProjectSchema);
-
-            // const location = new ObjectID("5dc9562e5b91b11758ccb7fa");
-            // const project = new ObjectID("5dc972b59580496d78c00ecf");
-
-            // User.remove({ _id: userId, projects: { $in: projectsExist}}, function(err: any) {
-            //     return err;
-            // });
-
-            // return User.remove({ _id: userId, projects: { $in: projectId}}, this.nameas);
-
-            //  User.deleteMany({ _id: userId, projects: { $in: projectId}}, function(err) {
-            //     return err;
-            //  });
-
-        } else {
-            return "Test";
-        }
-    }
+        
+        return await Users.updateOne(
+            { _id: userId }, {
+                $pull: {
+                    projects: {
+                        _id: {
+                            $in: projectId 
+                        }
+                    }
+                }, 
+        }, { runValidators: true });
+    }    
 }

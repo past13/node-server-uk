@@ -33,4 +33,30 @@ export default class UserController {
         const result = await service.deleteUserById(userId);
         res.status(200).json(result);
     }
+
+    public async addProjectsToUser (req: Request, res: Response) {
+        const body = req.body;
+        const service = new UserService();
+
+        try {   
+            const result = await service.addProjectsToUser(body);
+            res.status(200).json(result);
+
+        } catch(err) {
+            res.status(401).json(err);
+        }
+    }
+
+    public async deleteProjectFromUser (req: Request, res: Response) {
+        const body = req.body;
+        const service = new UserService();
+
+        try {   
+            const result = await service.deleteProjectFromUser(body);
+            res.status(200).json(result);
+
+        } catch(err) {
+            res.status(401).json("project was not deleted");
+        }
+    }
 }

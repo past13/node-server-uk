@@ -17,9 +17,10 @@ export class Routes {
         app.post('/users', this.userController.addUser); 
         app.get('/users', this.userController.getUsers); 
         app.delete('/users/:id', this.userController.deleteUser); 
+        app.post('/addprojectstouser', this.userController.addProjectsToUser); 
+        app.delete('/deleteprojectsfromuser/:id', this.userController.deleteProjectFromUser); 
 
         app.post('/projecttouser', this.projectController.updateProjectToUser); 
-        app.post('/addprojectstouser', this.projectController.addProjectsToUser); 
         app.delete('/deleteprojectsfromuser', this.projectController.deleteProjectsFromUser); 
 
         app.post('/projects', this.projectController.addProject); 

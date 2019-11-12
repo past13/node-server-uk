@@ -1,6 +1,5 @@
 import { Projects, ProjectSchema } from "../models/projectSchema";
 import LocationService from "./locationService";
-import CategoryService from "./categoryService";
 
 import MaterialService from "./materialService";
 import { model } from "mongoose";
@@ -13,7 +12,7 @@ export default class ProjectService {
         });
     }
 
-    public async getProjectsById (projectId: []) {
+    public async getProjectsById (projectId: any[]) {
         return await Projects.find({_id: { $in: projectId } });
     }
 
@@ -39,33 +38,6 @@ export default class ProjectService {
         const Project = model('Projects', ProjectSchema);
 
         let result;
-
-        //1. return specific fields description and name coz of 1 if 0 will return all fields except those two
-        // var fields = { 'description': 1, 'name': 1 };
-        // result = Projects.findById({_id: projectId }).select(fields);
-        
-        //2. update those fields 
-        // result = Projects.updateOne({ _id: projectId },{$set:{name: name,
-                                                                     //email: email}});
-        //3. update nested property but overrides all fields
-        // result = Projects.updateOne({_id: projectId},{location: { name: name }});
-
-        //4. 
-        // const result = Projects.findOneAndUpdate(query, updatedata, {upsert:true}, function(err, doc){
-        //     if (err) {
-        //         return { error: err }
-        //     }
-        //     return "success";
-        // });
-
-        // result = Projects.update(
-        //     { 
-        //         _id: projectId,
-        //         "location._id": 
-        //     },
-        //     { 
-        //         $set:{n
-
 
         return result;
     }
