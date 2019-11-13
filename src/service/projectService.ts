@@ -54,9 +54,11 @@ export default class ProjectService {
             location: location
         }
 
-        return Projects.findOneAndUpdate(query, updatedata, {upsert:true}, function(err, doc){
+        return Projects.findOneAndUpdate(query, updatedata, { upsert:true }, function(err, doc){
             if (err) {
-                return { error: err }
+                return { 
+                    error: err 
+                }
             }
             return doc;
         });
@@ -69,7 +71,8 @@ export default class ProjectService {
             phoneNumber, 
             email, 
             locationName, 
-            materialName 
+            materialName,
+            categoryName
         } = body;
         
         const updatedAt = new Date();

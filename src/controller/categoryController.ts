@@ -1,14 +1,14 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import CategoryService from '../service/categoryService';
 
 export default class CategoryController {
     
     public async addCategory (req: Request, res: Response) {
-        const { name } = req.body;
+        const { categoryName } = req.body;
         const service = new CategoryService();
         
         try {
-            const result = await service.addCategory(name);
+            const result = await service.addCategory(categoryName);
             if (result) {
                 res.status(200).json(result);
             } else {                
@@ -27,10 +27,11 @@ export default class CategoryController {
     }
 
     public async updateCategory (req: Request, res: Response) {
-        const service = new CategoryService();
-        const { cateogryId, name } = req.body;
+        const cateogryId = req.params.id;
+        const { categoryName } = req.body;
 
-        const result = await service.updateCategory(cateogryId, name);
+        const service = new CategoryService();
+        const result = await service.updateCategory(cateogryId, categoryName);
 
         res.status(200).json(result);
     } 
@@ -41,7 +42,9 @@ export default class CategoryController {
         const service = new CategoryService();
         const result = await service.deleteCategory(categoryId);
         
-        if (result.deletedCount !== undefined && result.deletedCount > 0) {
+        if (result.deletedCount !== undefined && 
+            result.deletedCount > 0) {
+
             res.status(200).json("category deleted");
         } else {
             res.status(200).json("category was not deleted");

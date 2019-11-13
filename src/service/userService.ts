@@ -69,16 +69,15 @@ export default class UserService {
         let list: any[] = [];
         const user = await Users.findById({ _id: userId }).lean();
 
-        if (user.projects.length === 0) {
+        if (user.projects.length !== 0) {
+            user.projects.map(function(project: any) {
+                if (!projectId.includes(project._id.toString())) {
+                    list.push(project._id);
+                }
+            });
+        } else {
             list = projectId;
         }
-
-        user.projects.map(function(project: any) {
-            if (!projectId.includes(project._id.toString())) {
-                list.push(project._id);
-            }
-        });
-
         return list;
     }
 
@@ -92,7 +91,11 @@ export default class UserService {
         if (projectsExist.length > 0) {
             return await Users.updateMany(
                 { _id: userId }, 
-                { $push: { projects: projectsExist } }
+                { 
+                    $push: { 
+                        projects: projectsExist 
+                    } 
+                }
             );
         } else {
             return "not updated"
