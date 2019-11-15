@@ -10,12 +10,12 @@ export default class MaterialService {
 
     public async addMaterial (body: any) {
         const updatedAt = new Date();
-        const { name } = body;
+        const { materialName } = body;
         
-        const materialExist = await this.getMaterialByName(name);
+        const materialExist = await this.getMaterialByName(materialName);
         if (!materialExist) {
             const material = new Materials({
-                name,
+                materialName,
                 updatedAt
             });
     
@@ -33,7 +33,7 @@ export default class MaterialService {
         });
     }
 
-    public async deletematerial (materialId: string) {
+    public async deleteMaterial (materialId: string) {
         return await Materials.deleteOne({_id: materialId});
     }
 }

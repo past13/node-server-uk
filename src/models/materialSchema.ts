@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 export const MaterialSchema = new Schema({
-  name: String,
+  materialName: String,
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

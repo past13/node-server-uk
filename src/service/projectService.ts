@@ -1,8 +1,8 @@
+import { model } from "mongoose";
 import { Projects, ProjectSchema } from "../models/projectSchema";
 import LocationService from "./locationService";
-
 import MaterialService from "./materialService";
-import { model } from "mongoose";
+import CategoryService from "./categoryService";
 
 export default class ProjectService {
 
@@ -32,6 +32,7 @@ export default class ProjectService {
         return await Projects.deleteOne({_id: projectId});
     }
 
+    //todo: updateMethod
     public async updateProjectById(body: any) {
         const { projectId, projectId2, name, description, phoneNumber, email } = body;
 
@@ -78,10 +79,12 @@ export default class ProjectService {
         const updatedAt = new Date();
         const locationService = new LocationService();
         const materialService = new MaterialService();
+        const categoryService = new CategoryService();
 
         const projectExist = await this.getProjectByName(name);
         const location = await locationService.getLocationByName(locationName);
         const material = await materialService.getMaterialByName(materialName);
+        const category = await categoryService.getCategoryByName(categoryName);
 
         if (!projectExist) {
             const project = new Projects({
@@ -91,6 +94,7 @@ export default class ProjectService {
                 email,
                 location,
                 material,
+                category,
                 updatedAt
             });
     

@@ -6,7 +6,6 @@ export default class MaterialController {
     public async addMaterial (req: Request, res: Response) {
         const body = req.body;
         const service = new MaterialService();
-        
         try {
             const material = await service.addMaterial(body);
             if (material) {
@@ -29,7 +28,7 @@ export default class MaterialController {
         const materialId = req.params.id;
         const service = new MaterialService();
 
-        const result = await service.deletematerial(materialId);
+        const result = await service.deleteMaterial(materialId);
 
         if (result.deletedCount !== undefined && result.deletedCount > 0) {
             res.status(200).json("material deleted");

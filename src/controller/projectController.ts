@@ -4,6 +4,28 @@ import UserService from '../service/userService';
 
 export default class ProjectController {
     
+    public async addProject (req: Request, res: Response) {
+        const body = req.body;
+        const service = new ProjectService();
+
+        try {     
+            const result = await service.addProject(body);
+            if (result !== "projectExist") {
+                res.status(200).json(result);
+            } else {
+                res.status(200).json(result);
+            }
+        } catch(err) {
+            res.status(401).json(err);
+        }
+    }
+
+    public async getProjects (req: Request, res: Response) {
+        const service = new ProjectService();
+        const result = await service.getProjects();
+        res.status(200).json(result);
+    }
+
     public async updateProjectById (req: Request, res: Response) {
         const body = req.body;
         const service = new ProjectService();
@@ -47,29 +69,7 @@ export default class ProjectController {
         } catch(err) {
             res.status(401).json(err);
         }
-    } 
-
-    public async getProjects (req: Request, res: Response) {
-        const service = new ProjectService();
-        const result = await service.getProjects();
-        res.status(200).json(result);
-    }
-
-    public async addProject (req: Request, res: Response) {
-        const body = req.body;
-        const service = new ProjectService();
-
-        try {     
-            const result = await service.addProject(body);
-            if (result !== "projectExist") {
-                res.status(200).json(result);
-            } else {
-                res.status(200).json(result);
-            }
-        } catch(err) {
-            res.status(401).json(err);
-        }
-    }
+    }         
 
     public async getProjectById (req: Request, res: Response) {
         const projectId = req.params.id;
