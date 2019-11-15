@@ -27,7 +27,7 @@ export default class CategoryService {
     public async updateCategory (categoryId: string, categoryName: string) {
         return Categories.updateOne(
             { _id: categoryId },
-            { $set: { categoryName: categoryName } }
+            { $set: { name: categoryName } }
         );
     }
 
@@ -37,7 +37,7 @@ export default class CategoryService {
         const categorytExist = await this.getCategoryByName(categoryName);
         if (categorytExist.length === 0) {
             const category = new Categories({
-                categoryName,
+                name: categoryName,
                 updatedAt
             });
     

@@ -19,13 +19,13 @@ export default class LocationService {
     }
 
     public async addLocation (body: any) {
-        const { name, country, city, address, postCode } = body;
+        const { locationName, country, city, address, postCode } = body;
         const updatedAt = new Date();
 
-        const locationExist = await this.getLocationByName(name);
+        const locationExist = await this.getLocationByName(locationName);
         if (!locationExist) {
             const location = new Locations({
-                name,
+                name: locationName,
                 country,
                 city,
                 address,

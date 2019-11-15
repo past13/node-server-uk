@@ -11,11 +11,11 @@ export default class MaterialService {
     public async addMaterial (body: any) {
         const updatedAt = new Date();
         const { materialName } = body;
-        
+
         const materialExist = await this.getMaterialByName(materialName);
         if (!materialExist) {
             const material = new Materials({
-                materialName,
+                name: materialName,
                 updatedAt
             });
     
