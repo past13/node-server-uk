@@ -15,7 +15,7 @@ export default class CategoryService {
     }
 
     public async getCategoryByName (categoryName: string) {
-        return await Categories.find({ categoryName: categoryName }, (category) => {
+        return await Categories.findOne({ name: categoryName }, (category) => {
             return category;
         });
     }
@@ -35,7 +35,7 @@ export default class CategoryService {
         const updatedAt = new Date();
 
         const categorytExist = await this.getCategoryByName(categoryName);
-        if (categorytExist.length === 0) {
+        if (categorytExist !== null) {
             const category = new Categories({
                 name: categoryName,
                 updatedAt

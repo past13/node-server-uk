@@ -24,6 +24,7 @@ export default class UserController {
     public async getUsers (req: Request, res: Response) {
         const service = new UserService();
         const result = await service.getUsers();
+
         res.status(200).json(result);
     }
 
@@ -31,6 +32,7 @@ export default class UserController {
         const userId = req.params.id;
         const service = new UserService();
         const result = await service.deleteUserById(userId);
+        
         res.status(200).json(result);
     }
 

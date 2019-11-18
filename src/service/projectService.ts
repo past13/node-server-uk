@@ -66,6 +66,7 @@ export default class ProjectService {
     }
 
     public async addProject (body: any) {
+
         const { 
             name, 
             description, 

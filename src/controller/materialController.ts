@@ -21,6 +21,7 @@ export default class MaterialController {
     public async getMaterials (req: Request, res: Response) {
         const service = new MaterialService();
         const result = await service.getMaterials();
+        
         res.status(200).json(result);
     }
 
