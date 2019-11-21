@@ -29,6 +29,8 @@ export class Routes {
         app.get('/projects/:id', this.projectController.getProjectById);
         app.delete('/projects/:id', this.projectController.deleteProject); 
 
+        app.post('/filterProjects', this.projectController.getFilteredProjects); 
+        
         app.put('/addlocationtoprojects/:id', this.projectController.addLocationToProject)
         
         app.post('/categories', this.categoryController.addCategory); 

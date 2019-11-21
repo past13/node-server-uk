@@ -26,6 +26,13 @@ export default class ProjectController {
         res.status(200).json(result);
     }
 
+    public async getFilteredProjects (req: Request, res: Response) {
+        const filter = req.body;
+        const service = new ProjectService();
+        const result = await service.getProjectByCriteria(filter);
+        res.status(200).json(result);
+    }
+
     public async updateProjectById (req: Request, res: Response) {
         const body = req.body;
         const service = new ProjectService();

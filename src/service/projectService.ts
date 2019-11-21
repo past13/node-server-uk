@@ -12,6 +12,24 @@ export default class ProjectService {
         });
     }
 
+    public async getProjectByCriteria(filter: any) {
+        let query = { $and: Array() };
+        if (filter.location !== undefined) { 
+            query.$and.push({"location.name": filter.location}); 
+        }
+
+        if (filter.category !== undefined) { 
+            query.$and.push({"category.name": filter.category}); 
+        }
+
+        if (filter.material !== undefined) { 
+            query.$and.push({"material.name": filter.material}); 
+        }
+
+        console.log(query);
+        return await Projects.find(query);
+    }
+
     public async getProjectsById (projectId: any[]) {
         return await Projects.find({_id: { $in: projectId } });
     }
