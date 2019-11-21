@@ -30,6 +30,7 @@ export default class ProjectController {
         const filter = req.body;
         const service = new ProjectService();
         const result = await service.getProjectByCriteria(filter);
+        
         res.status(200).json(result);
     }
 

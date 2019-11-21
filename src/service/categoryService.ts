@@ -35,7 +35,8 @@ export default class CategoryService {
         const updatedAt = new Date();
 
         const categorytExist = await this.getCategoryByName(categoryName);
-        if (categorytExist !== null) {
+
+        if (categorytExist === null) {
             const category = new Categories({
                 name: categoryName,
                 updatedAt

@@ -14,19 +14,25 @@ export default class ProjectService {
 
     public async getProjectByCriteria(filter: any) {
         let query = { $and: Array() };
-        if (filter.location !== undefined) { 
-            query.$and.push({"location.name": filter.location}); 
+
+        if (filter.length > 0) {
+            filter.forEach((element: any) => {
+                if (element.key === 'location') {
+                    query.$and.push({'location.name': element.value});
+                }
+    
+                if (element.key === 'category') { 
+                    query.$and.push({'category.name': element.value}); 
+                }
+    
+                if (element.key === 'material') { 
+                    query.$and.push({'material.name': element.value}); 
+                }
+            });
+        } else {
+            query.$and.push({});
         }
 
-        if (filter.category !== undefined) { 
-            query.$and.push({"category.name": filter.category}); 
-        }
-
-        if (filter.material !== undefined) { 
-            query.$and.push({"material.name": filter.material}); 
-        }
-
-        console.log(query);
         return await Projects.find(query);
     }
 
@@ -53,11 +59,8 @@ export default class ProjectService {
     //todo: updateMethod
     public async updateProjectById(body: any) {
         const { projectId, projectId2, name, description, phoneNumber, email } = body;
-
         const Project = model('Projects', ProjectSchema);
-
         let result;
-
         return result;
     }
 
