@@ -15,24 +15,21 @@ export default class ProjectService {
     public async getProjectByCriteria(filter: any) {
         let query = { $and: Array() };
 
-        if (filter.length > 0) {
-            filter.forEach((element: any) => {
-                if (element.key === 'location') {
-                    query.$and.push({'location.name': element.value});
-                }
-    
-                if (element.key === 'category') { 
-                    query.$and.push({'category.name': element.value}); 
-                }
-    
-                if (element.key === 'material') { 
-                    query.$and.push({'material.name': element.value}); 
-                }
-            });
+        if (Object.entries(filter).length > 0) {
+            if (filter['location'] !== undefined) {
+                query.$and.push({'location.name': filter['location']});
+            }
+            
+            if (filter['category'] !== undefined) { 
+                query.$and.push({'category.name': filter['category']}); 
+            }
+
+            if (filter['material'] !== undefined) { 
+                query.$and.push({'material.name': filter['material']}); 
+            }
         } else {
             query.$and.push({});
         }
-
         return await Projects.find(query);
     }
 
