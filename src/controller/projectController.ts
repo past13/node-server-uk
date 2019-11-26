@@ -7,7 +7,6 @@ export default class ProjectController {
     public async addProject (req: Request, res: Response) {
         const body = req.body;
         const service = new ProjectService();
-
         try {     
             const result = await service.addProject(body);
             if (result !== "projectExist") {

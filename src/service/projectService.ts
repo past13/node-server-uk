@@ -14,7 +14,6 @@ export default class ProjectService {
 
     public async getProjectByCriteria(filter: any) {
         let query = { $and: Array() };
-
         if (Object.entries(filter).length > 0) {
             if (filter['location'] !== undefined) {
                 query.$and.push({'location.name': filter['location']});
@@ -84,8 +83,8 @@ export default class ProjectService {
     }
 
     public async addProject (body: any) {
-
         const { 
+            type,
             name, 
             description, 
             phoneNumber, 
@@ -94,7 +93,7 @@ export default class ProjectService {
             materialName,
             categoryName
         } = body;
-        
+
         const updatedAt = new Date();
         const locationService = new LocationService();
         const materialService = new MaterialService();
@@ -104,9 +103,10 @@ export default class ProjectService {
         const location = await locationService.getLocationByName(locationName);
         const material = await materialService.getMaterialByName(materialName);
         const category = await categoryService.getCategoryByName(categoryName);
-
+        
         if (!projectExist) {
             const project = new Projects({
+                type,
                 name,
                 description,
                 phoneNumber,
@@ -116,7 +116,7 @@ export default class ProjectService {
                 category,
                 updatedAt
             });
-    
+
             await project.save();
             return project;
 
