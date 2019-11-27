@@ -54,8 +54,8 @@ export default class ProjectController {
         const service = new UserService();
 
         try {   
-            const result = await service.deleteProjectFromUser(body);
-            res.status(200).json(result);
+            // const result = await service.deleteProjectFromUser(body);
+            // res.status(200).json(result);
 
         } catch(err) {
             res.status(401).json(err);
@@ -67,12 +67,12 @@ export default class ProjectController {
         const service = new UserService();
 
         try {   
-            const result = await service.updateProjectToUser(body);
-            if (result.nModified !== 0) {
-                res.status(200).json("updated");
-            } else {
-                res.status(200).json("not updated");
-            }
+            // const result = await service.updateProjectToUser(body);
+            // if (result.nModified !== 0) {
+            //     res.status(200).json("updated");
+            // } else {
+            //     res.status(200).json("not updated");
+            // }
         } catch(err) {
             res.status(401).json(err);
         }

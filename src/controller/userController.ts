@@ -1,64 +1,84 @@
 import { Request, Response } from 'express';
-import UserService from '../service/userService';
+
+const User = require('../models/userSchema');
 
 export default class UserController {
    
-    public async addUser (req: Request, res: Response) {
+    public async signUpUser (req: Request, res: Response) {
         const body = req.body;
-        const service = new UserService();
+        const {
+            firstName,
+            lastName,
+            password
+        } = body;
 
-        try {     
-            const result = await service.addUser(body);
-            
-            if (result !== "userExist") {
-                res.status(200).json(result);
-            } else {
-                res.status(200).json(result);
-            }
+        let {
+            email
+        } = body;
 
-        } catch(err) {
-            res.status(401).json(err);
+        if (!firstName) {
+            return res.send({
+                success: false,
+                message: 'Error: First name cannot be blank.'
+            });
         }
-    }
 
-    public async getUsers (req: Request, res: Response) {
-        const service = new UserService();
-        const result = await service.getUsers();
-
-        res.status(200).json(result);
-    }
-
-    public async deleteUser (req: Request, res: Response) {
-        const userId = req.params.id;
-        const service = new UserService();
-        const result = await service.deleteUserById(userId);
-        
-        res.status(200).json(result);
-    }
-
-    public async addProjectsToUser (req: Request, res: Response) {
-        const body = req.body;
-        const service = new UserService();
-
-        try {   
-            const result = await service.addProjectsToUser(body);
-            res.status(200).json(result);
-
-        } catch(err) {
-            res.status(401).json(err);
+        if (!lastName) {
+            return res.send({
+                success: false,
+                message: 'Error: Last name cannot be blank.'
+            });
         }
-    }
 
-    public async deleteProjectFromUser (req: Request, res: Response) {
-        const body = req.body;
-        const service = new UserService();
-
-        try {   
-            const result = await service.deleteProjectFromUser(body);
-            res.status(200).json(result);
-
-        } catch(err) {
-            res.status(401).json("project was not deleted");
+        if (!email) {
+            return res.send({
+                success: false,
+                message: 'Error: Email name cannot be blank.'
+            });
         }
+
+        if (!password) {
+            return res.send({
+                success: false,
+                message: 'Error: Password name cannot be blank.'
+            });
+        }
+
+        email = email.toLowerCase();
+        User.find({
+            email: email
+        }, (err: any, previousUsers: { length: number; }) => {
+            if (err) {
+                return res.send({
+                    success: false,
+                    message: 'Error: Something went wrong.'
+                });
+            } else if (previousUsers.length > 0) {
+                return res.send({
+                    success: false,
+                    message: 'Account already exist.'
+                });
+            } 
+
+            //save new user
+            const newUser = new User();
+
+            newUser.email = email;
+            newUser.firstName = firstName;
+            newUser.lastName = lastName;
+            newUser.password = newUser.generateHash(password);
+            newUser.save((err: any, user: any) => {
+                if (err) {
+                    return res.send({
+                        success: false,
+                        message: 'Error: Server error'
+                    });
+                }
+                return res.send({
+                    success: true,
+                    message: 'Signed up'
+                });
+            })
+        })
     }
 }

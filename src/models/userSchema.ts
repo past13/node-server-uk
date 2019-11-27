@@ -1,13 +1,48 @@
-import { ProjectSchema } from './projectSchema';
 import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
+import bcrypt from 'bcrypt';
 
-export const UserSchema = new Schema({
-  firstName: String,
-  lastName: String,
-  projects: [ProjectSchema],
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+const UserSchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    default: ''
+  },
+  lastName: {
+    type: String,
+    default: ''
+  },
+  email: {
+    type: String,
+    default: ''
+  },
+  password: {
+    type: String,
+    default: ''
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false
+  },
+  createdAt: { 
+    type: Date, 
+    default: Date.now 
+  },
+  updatedAt: { 
+    type: Date, 
+    default: Date.now 
+  }
 });
 
-export const Users = mongoose.model('Users', UserSchema);
+UserSchema.methods.generateHash = function(password: String) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
+}
+
+UserSchema.methods.validPassword = function(password: String) {
+  return bcrypt.compareSync(password, this.password);
+}
+
+module.exports = mongoose.model('User', UserSchema);
+
+
+
+
+

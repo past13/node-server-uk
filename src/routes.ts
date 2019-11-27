@@ -14,14 +14,16 @@ export class Routes {
 
     public routes(app: Application): void {
 
-        app.post('/users', this.userController.addUser); 
-        app.get('/users', this.userController.getUsers); 
-        app.delete('/users/:id', this.userController.deleteUser); 
-        app.post('/addprojectstouser', this.userController.addProjectsToUser); 
-        app.delete('/deleteprojectsfromuser/:id', this.userController.deleteProjectFromUser); 
+        app.post('/account/signup', this.userController.signUpUser); 
+        
 
-        app.post('/projecttouser', this.projectController.updateProjectToUser); 
-        app.delete('/deleteprojectsfromuser', this.projectController.deleteProjectsFromUser); 
+        // app.get('/users', this.userController.getUsers); 
+        // app.delete('/users/:id', this.userController.deleteUser); 
+        // app.post('/addprojectstouser', this.userController.addProjectsToUser); 
+        // app.delete('/deleteprojectsfromuser/:id', this.userController.deleteProjectFromUser); 
+
+        // app.post('/projecttouser', this.projectController.updateProjectToUser); 
+        // app.delete('/deleteprojectsfromuser', this.projectController.deleteProjectsFromUser); 
 
         app.post('/projects', this.projectController.addProject); 
         app.put('/projects/:id', this.projectController.updateProjectById)
