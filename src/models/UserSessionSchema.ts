@@ -1,11 +1,18 @@
-import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
 
-export const UserSessionSchema = new Schema({
-  firstName: String,
-  lastName: String,
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+const UserSessionSchema = new mongoose.Schema({
+    userId: {
+        type: String,
+        default: ''
+    },
+    timestamp: {
+        type: Date,
+        default: Date.now()
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    }
 });
 
-export const Users = mongoose.model('UsersSession', UserSessionSchema);
+module.exports = mongoose.model('UserSession', UserSessionSchema);

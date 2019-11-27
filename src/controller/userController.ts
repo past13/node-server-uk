@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+const UserSession = require('../models/UserSessionSchema');
 const User = require('../models/userSchema');
 
 export default class UserController {
@@ -81,4 +82,75 @@ export default class UserController {
             })
         })
     }
+
+    public async signInUser (req: Request, res: Response) {
+        const { body } = req;
+        const {
+            password
+        } = body;
+
+        let {
+            email
+        } = body;
+
+        if (!email) {
+            return res.send({
+                success: false,
+                message: 'Error: Email cannot be blank'
+            });
+        }
+
+        if (!password) {
+            return res.send({
+                success: false,
+                message: 'Error: Password cannot be blank'
+            });
+        }
+
+        email = email.toLowerCase();
+
+        User.find({
+            email: email
+        },(err: any, users: any[]) => {
+            if (err) {
+                return res.send({
+                    success: false,
+                    message: 'Error: server error'
+                });
+            }
+            if (users.length != 1) {
+                return res.send({
+                    success: false,
+                    message: 'Error: Invalid'
+                });
+            }
+
+            const user = users[0];
+            if (!user.validPassword(password)) {
+                return res.send({
+                    success: false,
+                    message: 'Error: Invalid'
+                });
+            }
+
+            const userSession = new UserSession();
+            userSession.userId = user._id;
+            userSession.save((err: any, doc: { _id: any; }) => {
+                if (err) {
+                    return res.send({
+                        success: false,
+                        message: 'Error: server error'
+                    });
+                }
+
+                return res.send({
+                    success: true,
+                    message: 'Valid sign in',
+                    token: doc._id
+                });
+            })
+        })
+    }
+
+
 }

@@ -15,6 +15,7 @@ export class Routes {
     public routes(app: Application): void {
 
         app.post('/account/signup', this.userController.signUpUser); 
+        app.post('/account/signin', this.userController.signInUser); 
         
 
         // app.get('/users', this.userController.getUsers); 
