@@ -16,7 +16,8 @@ export class Routes {
 
         app.post('/account/signup', this.userController.signUpUser); 
         app.post('/account/signin', this.userController.signInUser); 
-        
+        app.get('/account/verify', this.userController.verifyUser); 
+        app.get('/account/logout', this.userController.logoutUser); 
 
         // app.get('/users', this.userController.getUsers); 
         // app.delete('/users/:id', this.userController.deleteUser); 

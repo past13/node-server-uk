@@ -152,5 +152,61 @@ export default class UserController {
         })
     }
 
+    public async verifyUser (req: Request, res: Response) {
+        //Get token
+        // Verify token is one of kind and item not deleted
+        const { query } = req;
+        const { token } = query;
+        // ?token=test
 
+        // Verify the token is one of a kind and its not deleted
+        UserSession.find({
+            _id: token,
+            isDeleted: false
+        }, (err: any, sessions: any) => {
+            if (err) {
+                return res.send({
+                    success: false,
+                    message: 'Error: Server error'
+                });
+            }
+            if (sessions.length != 1) {
+                return res.send({
+                    success: false,
+                    message: 'Error: Invalid'
+                });
+            } else {
+                return res.send({
+                    success: true,
+                    message: 'Good'
+                });
+            }
+        });
+    }
+
+    public async logoutUser (req: Request, res: Response) {
+      //Get token
+      const { query } = req;
+      const { token } = query;
+
+      UserSession.findOneAndUpdate({ 
+          _id: token,
+          isDeleted: false
+      }, {
+          $set:{
+              isDeleted: true
+          }
+      }, null, (err: any, sessions: any) => {
+          if (err) {
+              return res.send({
+                  success: false,
+                  message: 'Error: Server error'
+              });
+          }
+          return res.send({
+              success: true,
+              message: 'Good'
+          });
+      });
+    }
 }
