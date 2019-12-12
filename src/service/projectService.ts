@@ -52,12 +52,39 @@ export default class ProjectService {
         return await Projects.deleteOne({_id: projectId});
     }
 
-    //todo: updateMethod
     public async updateProjectById(body: any) {
-        const { projectId, projectId2, name, description, phoneNumber, email } = body;
-        const Project = model('Projects', ProjectSchema);
-        let result;
-        return result;
+        const { 
+            id, 
+            projectName, 
+            type,
+            materialName, 
+            category, 
+            locationName, 
+            phoneNumber, 
+            description,
+            email
+        } = body;
+
+        const updatedAt = new Date();
+
+        const project = Projects.findByIdAndUpdate(id, {
+            projectName: projectName,
+            // type: type,
+            description: description,
+            phoneNumber: phoneNumber,
+            email: email,
+            // location: locationName,
+            // material: materialName,
+            // category: category,
+            updatedAt: updatedAt
+        }, { new: false }, function (err, project) {
+            if (err) {
+                return err;
+            }
+            return project;
+        });
+
+        return project;
     }
 
     public async addLocationToProject (projectId: string, body: any) {
@@ -67,7 +94,10 @@ export default class ProjectService {
         const location = await locationService.getLocationByName(locationName);
 
         //replace existing location
-        const query = { _id: projectId };
+        const query = { 
+            _id: projectId 
+        };
+
         const updatedata = {
             location: location
         }
@@ -85,7 +115,7 @@ export default class ProjectService {
     public async addProject (body: any) {
         const { 
             type,
-            name, 
+            projectName, 
             description, 
             phoneNumber, 
             email, 
@@ -99,7 +129,7 @@ export default class ProjectService {
         const materialService = new MaterialService();
         const categoryService = new CategoryService();
 
-        const projectExist = await this.getProjectByName(name);
+        const projectExist = await this.getProjectByName(projectName);
         const location = await locationService.getLocationByName(locationName);
         const material = await materialService.getMaterialByName(materialName);
         const category = await categoryService.getCategoryByName(categoryName);
@@ -107,7 +137,7 @@ export default class ProjectService {
         if (!projectExist) {
             const project = new Projects({
                 type,
-                name,
+                projectName,
                 description,
                 phoneNumber,
                 email,

@@ -5,7 +5,7 @@ import { CategorySchema } from './categorySchema';
 const Schema = mongoose.Schema;
 
 export const ProjectSchema = new Schema({
-  name: String,
+  projectName: String,
   type: String,
   description: String,
   phoneNumber: Number,

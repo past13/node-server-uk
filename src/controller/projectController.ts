@@ -6,13 +6,14 @@ export default class ProjectController {
     
     public async addProject (req: Request, res: Response) {
         const body = req.body;
+
         const service = new ProjectService();
         try {     
             const result = await service.addProject(body);
             if (result !== "projectExist") {
                 res.status(200).json(result);
             } else {
-                res.status(200).json(result);
+                res.status(404).json(result);
             }
         } catch(err) {
             res.status(401).json(err);
@@ -36,7 +37,7 @@ export default class ProjectController {
     public async updateProjectById (req: Request, res: Response) {
         const body = req.body;
         const service = new ProjectService();
-
+        
         try {   
             const result = await service.updateProjectById(body);
             // if (result.nModified !== 0) {
